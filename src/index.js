@@ -11,6 +11,7 @@ export default class CollapsibleToolbar extends Component {
     static propTypes = {
         renderContent: PropTypes.func.isRequired,
         renderNavBar: PropTypes.func.isRequired,
+        imageSource: PropTypes.string.isRequired,
         collapsedNavBarBackgroundColor: PropTypes.string,
         toolBarHeight: PropTypes.number
     };
@@ -53,7 +54,7 @@ export default class CollapsibleToolbar extends Component {
     }
 
     render() {
-        const { collapsedNavBarBackgroundColor, toolBarHeight } = this.props;
+        const { collapsedNavBarBackgroundColor, imageSource, toolBarHeight } = this.props;
 
         return (
             <View style={styles.container}>
@@ -64,7 +65,7 @@ export default class CollapsibleToolbar extends Component {
                     }])}
                 >
                     <Image
-                        source={{ uri: 'https://lorempixel.com/400/300/' }}
+                        source={{ uri: imageSource || '' }}
                         style={{ height: toolBarHeight }}
                     />
 
