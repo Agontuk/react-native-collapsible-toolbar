@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import { Animated, Image, Platform, StyleSheet, View } from 'react-native';
+import { Animated, Image, Platform, StatusBar, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 const DEFAULT_TOOLBAR_HEIGHT = 300;
-const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
-const STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? 20 : 0;
-const NAV_BAR_HEIGHT = APPBAR_HEIGHT + STATUS_BAR_HEIGHT;
 
 export default class CollapsibleToolbar extends Component {
     static propTypes = {
@@ -14,30 +11,37 @@ export default class CollapsibleToolbar extends Component {
         renderContent: PropTypes.func.isRequired,
         renderNavBar: PropTypes.func.isRequired,
         renderToolBar: PropTypes.func,
-        toolBarHeight: PropTypes.number
+        toolBarHeight: PropTypes.number,
+        translucentStatusBar: PropTypes.bool
     };
 
     static defaultProps = {
         collapsedNavBarBackgroundColor: '#FFF',
         renderToolBar: undefined,
-        toolBarHeight: DEFAULT_TOOLBAR_HEIGHT
+        toolBarHeight: DEFAULT_TOOLBAR_HEIGHT,
+        translucentStatusBar: false
     };
 
     constructor(props) {
         super(props);
 
-        const MAX_SCROLLABLE_HEIGHT = props.toolBarHeight - NAV_BAR_HEIGHT;
-        const inputRange = [MAX_SCROLLABLE_HEIGHT - 0.1, MAX_SCROLLABLE_HEIGHT];
+        const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
+        const ANDROID_STATUS_BAR_HEIGHT = props.translucentStatusBar ? StatusBar.currentHeight : 0;
+
+        this.statusBarHeight = Platform.OS === 'ios' ? 20 : ANDROID_STATUS_BAR_HEIGHT;
+        this.navBarHeight = APPBAR_HEIGHT + this.statusBarHeight;
+        this.maxScrollableHeight = props.toolBarHeight - this.navBarHeight;
+        const inputRange = [this.maxScrollableHeight - 0.1, this.maxScrollableHeight];
 
         this.scrollOffsetY = new Animated.Value(0);
 
         this.opacity = this.scrollOffsetY.interpolate({
-            inputRange: [MAX_SCROLLABLE_HEIGHT / 2, MAX_SCROLLABLE_HEIGHT],
+            inputRange: [this.maxScrollableHeight / 2, this.maxScrollableHeight],
             outputRange: [0, 1]
         });
 
         this.zIndex = this.scrollOffsetY.interpolate({
-            inputRange: [MAX_SCROLLABLE_HEIGHT / 2, MAX_SCROLLABLE_HEIGHT],
+            inputRange: [this.maxScrollableHeight / 2, this.maxScrollableHeight],
             outputRange: [0, 1000]
         });
 
@@ -69,7 +73,6 @@ export default class CollapsibleToolbar extends Component {
             renderToolBar,
             toolBarHeight
         } = this.props;
-
 
         if (!renderToolBar && !imageSource) {
             // eslint-disable-next-line no-console
@@ -114,6 +117,8 @@ export default class CollapsibleToolbar extends Component {
                         styles.navBarContainer,
                         {
                             backgroundColor: this.navBackgroundColor,
+                            height: this.navBarHeight,
+                            paddingTop: this.statusBarHeight,
                             ...Platform.select({
                                 ios: {
                                     borderBottomWidth: this.navBottomBorder
@@ -143,8 +148,6 @@ const styles = {
         right: 0
     },
     navBarContainer: {
-        paddingTop: STATUS_BAR_HEIGHT,
-        height: STATUS_BAR_HEIGHT + APPBAR_HEIGHT,
         position: 'absolute',
         left: 0,
         right: 0,
