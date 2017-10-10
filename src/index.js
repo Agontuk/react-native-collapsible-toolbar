@@ -9,15 +9,17 @@ const NAV_BAR_HEIGHT = APPBAR_HEIGHT + STATUS_BAR_HEIGHT;
 
 export default class CollapsibleToolbar extends Component {
     static propTypes = {
-        renderContent: PropTypes.func.isRequired,
-        renderNavBar: PropTypes.func.isRequired,
         imageSource: PropTypes.string.isRequired,
         collapsedNavBarBackgroundColor: PropTypes.string,
+        renderContent: PropTypes.func.isRequired,
+        renderNavBar: PropTypes.func.isRequired,
+        renderToolBar: PropTypes.func,
         toolBarHeight: PropTypes.number
     };
 
     static defaultProps = {
         collapsedNavBarBackgroundColor: '#FFF',
+        renderToolBar: undefined,
         toolBarHeight: DEFAULT_TOOLBAR_HEIGHT
     };
 
@@ -54,7 +56,20 @@ export default class CollapsibleToolbar extends Component {
     }
 
     render() {
-        const { collapsedNavBarBackgroundColor, imageSource, toolBarHeight } = this.props;
+        const {
+            collapsedNavBarBackgroundColor,
+            imageSource,
+            renderContent,
+            renderNavBar,
+            renderToolBar,
+            toolBarHeight
+        } = this.props;
+
+
+        if (!renderToolBar && !imageSource) {
+            // eslint-disable-next-line no-console
+            console.error('Either an image source or a custom toolbar component must be provided');
+        }
 
         return (
             <View style={styles.container}>
@@ -64,10 +79,15 @@ export default class CollapsibleToolbar extends Component {
                         nativeEvent: { contentOffset: { y: this.scrollOffsetY } }
                     }])}
                 >
-                    <Image
-                        source={{ uri: imageSource || '' }}
-                        style={{ height: toolBarHeight }}
-                    />
+                    <View>
+                        {renderToolBar
+                            ? renderToolBar()
+                            : <Image
+                                source={{ uri: imageSource || '' }}
+                                style={{ height: toolBarHeight }}
+                            />
+                        }
+                    </View>
 
                     <Animated.View
                         style={[
@@ -80,7 +100,7 @@ export default class CollapsibleToolbar extends Component {
                         ]}
                     />
 
-                    {this.props.renderContent()}
+                    {renderContent()}
                 </Animated.ScrollView>
 
                 <Animated.View
@@ -99,7 +119,7 @@ export default class CollapsibleToolbar extends Component {
                         }
                     ]}
                 >
-                    {this.props.renderNavBar()}
+                    {renderNavBar()}
                 </Animated.View>
             </View>
         );
