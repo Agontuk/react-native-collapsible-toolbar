@@ -1,0 +1,43 @@
+{
+    "extends": ["airbnb"],
+    "parser": "babel-eslint",
+    "plugins": ["react"],
+    "rules": {
+        // Disable trailing comma
+        "comma-dangle": ["error", "never"],
+
+        "import/no-extraneous-dependencies": "off",
+
+        // Use indent with 4 spaces
+        "indent": ["error", 4, {
+            "VariableDeclarator": {
+                "var": 2,
+                "let": 2,
+                "const": 2
+            },
+            "SwitchCase": 1
+        }],
+
+        // Deprecated
+        "jsx-a11y/href-no-hash": "off",
+
+        // Use single quote in jsx attributes
+        "jsx-quotes": ["error", "prefer-single"],
+
+        "no-use-before-define": "off",
+
+        // Use indent with 4 spaces for jsx
+        "react/jsx-indent": ["error", 4],
+
+        // Use indent with 4 spaces in props
+        "react/jsx-indent-props": ["error", 4],
+
+        // Allow .js & .jsx extension
+        "react/jsx-filename-extension": ["error", {
+            "extensions": [".js", ".jsx"]
+        }],
+
+        // Enforce component methods order
+        "react/sort-comp": "off"
+    }
+}
