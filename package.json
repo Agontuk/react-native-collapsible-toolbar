@@ -1,7 +1,7 @@
 {
   "name": "react-native-collapsible-toolbar",
   "version": "0.0.1",
-  "description": "A react-native pure JS based collapsible toolbar for Android and iOS",
+  "description": "Pure JS based collapsible toolbar for Android and iOS",
   "main": "src/index.js",
   "scripts": {
     "precommit": "lint-staged"
