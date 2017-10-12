@@ -35,14 +35,14 @@ export default class CollapsibleToolbar extends Component {
 
         this.scrollOffsetY = new Animated.Value(0);
 
-        this.opacity = this.scrollOffsetY.interpolate({
+        this.toolBarOpacity = this.scrollOffsetY.interpolate({
             inputRange: [this.maxScrollableHeight / 2, this.maxScrollableHeight],
-            outputRange: [0, 1]
+            outputRange: [1, 0]
         });
 
-        this.zIndex = this.scrollOffsetY.interpolate({
+        this.overlayOpacity = this.scrollOffsetY.interpolate({
             inputRange: [this.maxScrollableHeight / 2, this.maxScrollableHeight],
-            outputRange: [0, 1000]
+            outputRange: [0, 1]
         });
 
         this.navBackgroundColor = this.scrollOffsetY.interpolate({
@@ -93,13 +93,12 @@ export default class CollapsibleToolbar extends Component {
                             {
                                 backgroundColor: collapsedNavBarBackgroundColor,
                                 height: toolBarHeight,
-                                opacity: this.opacity,
-                                zIndex: this.zIndex
+                                opacity: this.overlayOpacity
                             }
                         ]}
                     />
 
-                    <View>
+                    <Animated.View style={{ opacity: this.toolBarOpacity }}>
                         {renderToolBar
                             ? renderToolBar()
                             : <Image
@@ -107,7 +106,7 @@ export default class CollapsibleToolbar extends Component {
                                 style={{ height: toolBarHeight }}
                             />
                         }
-                    </View>
+                    </Animated.View>
 
                     {renderContent()}
                 </Animated.ScrollView>
