@@ -37,3 +37,5 @@ import CollapsibleToolbar from 'react-native-collapsible-toolbar';
 | renderToolBar | Function | - | Custom toolbar component (will override imageSource) |
 | toolBarHeight | Number | 300 | Height of the collpasible toolbar |
 | translucentStatusBar | Boolean | false | If true, will adjust the nav bar position for Android |
+
+All the [ScrollView props](https://facebook.github.io/react-native/docs/scrollview.html) are also supported.

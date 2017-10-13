@@ -66,7 +66,8 @@ export default class CollapsibleToolbar extends Component {
             renderContent,
             renderNavBar,
             renderToolBar,
-            toolBarHeight
+            toolBarHeight,
+            ...props
         } = this.props;
 
         if (!renderToolBar && !imageSource) {
@@ -77,6 +78,7 @@ export default class CollapsibleToolbar extends Component {
         return (
             <View style={styles.container}>
                 <Animated.ScrollView
+                    {...props}
                     scrollEventThrottle={1}
                     onScroll={Animated.event(
                         [{ nativeEvent: { contentOffset: { y: this.scrollOffsetY } } }],
