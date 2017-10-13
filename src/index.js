@@ -113,15 +113,7 @@ export default class CollapsibleToolbar extends Component {
                             backgroundColor: collapsedNavBarBackgroundColor,
                             height: this.navBarHeight,
                             opacity: this.navBarOpacity,
-                            paddingTop: this.statusBarHeight,
-                            ...Platform.select({
-                                ios: {
-                                    borderBottomWidth: StyleSheet.hairlineWidth
-                                },
-                                android: {
-                                    elevation: 4
-                                }
-                            })
+                            paddingTop: this.statusBarHeight
                         }
                     ]}
                 >
@@ -130,7 +122,7 @@ export default class CollapsibleToolbar extends Component {
 
                 <Animated.View
                     style={[
-                        styles.navBarContainer,
+                        styles.navBarOverlay,
                         {
                             height: this.navBarHeight,
                             opacity: this.navBarOverlayOpacity,
@@ -145,7 +137,7 @@ export default class CollapsibleToolbar extends Component {
     }
 }
 
-const styles = {
+const styles = StyleSheet.create({
     container: {
         flex: 1
     },
@@ -156,20 +148,29 @@ const styles = {
         right: 0
     },
     navBarContainer: {
-        backgroundColor: 'rgba(0, 0, 0, 0)',
         position: 'absolute',
         left: 0,
         right: 0,
         ...Platform.select({
             ios: {
-                // shadowColor: 'black',
-                // shadowOpacity: 0.1,
-                // shadowRadius: StyleSheet.hairlineWidth,
-                // shadowOffset: {
-                //     height: StyleSheet.hairlineWidth
-                // },
+                shadowColor: 'black',
+                shadowOpacity: 0.1,
+                shadowRadius: StyleSheet.hairlineWidth,
+                shadowOffset: {
+                    height: StyleSheet.hairlineWidth
+                },
+                borderBottomWidth: StyleSheet.hairlineWidth,
                 borderBottomColor: 'rgba(0, 0, 0, .3)'
+            },
+            android: {
+                elevation: 4
             }
         })
+    },
+    navBarOverlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0)',
+        position: 'absolute',
+        left: 0,
+        right: 0
     }
-};
+});
