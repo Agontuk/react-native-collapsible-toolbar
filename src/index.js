@@ -31,36 +31,30 @@ export default class CollapsibleToolbar extends Component {
         this.statusBarHeight = Platform.OS === 'ios' ? 20 : ANDROID_STATUS_BAR_HEIGHT;
         this.navBarHeight = APPBAR_HEIGHT + this.statusBarHeight;
         this.maxScrollableHeight = props.toolBarHeight - this.navBarHeight;
-        const inputRange = [this.maxScrollableHeight - 0.1, this.maxScrollableHeight];
+
+        const inputRange1 = [this.maxScrollableHeight / 2, this.maxScrollableHeight];
+        const inputRange2 = [this.maxScrollableHeight - 0.1, this.maxScrollableHeight];
 
         this.scrollOffsetY = new Animated.Value(0);
 
         this.toolBarOpacity = this.scrollOffsetY.interpolate({
-            inputRange: [this.maxScrollableHeight / 2, this.maxScrollableHeight],
+            inputRange: inputRange1,
             outputRange: [1, 0]
         });
 
-        this.overlayOpacity = this.scrollOffsetY.interpolate({
-            inputRange: [this.maxScrollableHeight / 2, this.maxScrollableHeight],
+        this.toolBarOverlayOpacity = this.scrollOffsetY.interpolate({
+            inputRange: inputRange1,
             outputRange: [0, 1]
         });
 
-        this.navBackgroundColor = this.scrollOffsetY.interpolate({
-            inputRange,
-            outputRange: ['rgba(0, 0, 0, 0)', props.collapsedNavBarBackgroundColor],
-            extrapolate: 'clamp'
+        this.navBarOpacity = this.scrollOffsetY.interpolate({
+            inputRange: inputRange2,
+            outputRange: [0, 1]
         });
 
-        this.navBottomBorder = this.scrollOffsetY.interpolate({
-            inputRange,
-            outputRange: [0, StyleSheet.hairlineWidth],
-            extrapolate: 'clamp'
-        });
-
-        this.navElevation = this.scrollOffsetY.interpolate({
-            inputRange,
-            outputRange: [0, 4],
-            extrapolate: 'clamp'
+        this.navBarOverlayOpacity = this.scrollOffsetY.interpolate({
+            inputRange: inputRange2,
+            outputRange: [1, 0]
         });
     }
 
@@ -82,10 +76,11 @@ export default class CollapsibleToolbar extends Component {
         return (
             <View style={styles.container}>
                 <Animated.ScrollView
-                    scrollEventThrottle={16}
-                    onScroll={Animated.event([{
-                        nativeEvent: { contentOffset: { y: this.scrollOffsetY } }
-                    }])}
+                    scrollEventThrottle={1}
+                    onScroll={Animated.event(
+                        [{ nativeEvent: { contentOffset: { y: this.scrollOffsetY } } }],
+                        { useNativeDriver: true }
+                    )}
                 >
                     <Animated.View
                         style={[
@@ -93,7 +88,7 @@ export default class CollapsibleToolbar extends Component {
                             {
                                 backgroundColor: collapsedNavBarBackgroundColor,
                                 height: toolBarHeight,
-                                opacity: this.overlayOpacity
+                                opacity: this.toolBarOverlayOpacity
                             }
                         ]}
                     />
@@ -115,17 +110,31 @@ export default class CollapsibleToolbar extends Component {
                     style={[
                         styles.navBarContainer,
                         {
-                            backgroundColor: this.navBackgroundColor,
+                            backgroundColor: collapsedNavBarBackgroundColor,
                             height: this.navBarHeight,
+                            opacity: this.navBarOpacity,
                             paddingTop: this.statusBarHeight,
                             ...Platform.select({
                                 ios: {
-                                    borderBottomWidth: this.navBottomBorder
+                                    borderBottomWidth: StyleSheet.hairlineWidth
                                 },
                                 android: {
-                                    elevation: this.navElevation
+                                    elevation: 4
                                 }
                             })
+                        }
+                    ]}
+                >
+                    {renderNavBar()}
+                </Animated.View>
+
+                <Animated.View
+                    style={[
+                        styles.navBarContainer,
+                        {
+                            height: this.navBarHeight,
+                            opacity: this.navBarOverlayOpacity,
+                            paddingTop: this.statusBarHeight
                         }
                     ]}
                 >
@@ -147,6 +156,7 @@ const styles = {
         right: 0
     },
     navBarContainer: {
+        backgroundColor: 'rgba(0, 0, 0, 0)',
         position: 'absolute',
         left: 0,
         right: 0,
