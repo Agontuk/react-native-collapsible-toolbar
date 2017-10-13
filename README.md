@@ -3,6 +3,7 @@ Pure JS based collapsible toolbar for react native on Android and iOS.
 
 ## Usage
 ```javascript
+import { Platform } from 'react-native';
 import CollapsibleToolbar from 'react-native-collapsible-toolbar';
 
 ...
@@ -12,7 +13,7 @@ import CollapsibleToolbar from 'react-native-collapsible-toolbar';
     renderToolBar={this.renderToolBar}
     imageSource='https://lorempixel.com/400/300/'
     collapsedNavBarBackgroundColor='#009688'
-    translucentStatusBar
+    translucentStatusBar={Platform.Version >= 21}
     toolBarHeight={300}
 />
 ...
