@@ -6,8 +6,8 @@ const DEFAULT_TOOLBAR_HEIGHT = 300;
 
 export default class CollapsibleToolbar extends Component {
     static propTypes = {
-        imageSource: PropTypes.string.isRequired,
         collapsedNavBarBackgroundColor: PropTypes.string,
+        imageSource: PropTypes.string,
         renderContent: PropTypes.func.isRequired,
         renderNavBar: PropTypes.func.isRequired,
         renderToolBar: PropTypes.func,
@@ -17,6 +17,7 @@ export default class CollapsibleToolbar extends Component {
 
     static defaultProps = {
         collapsedNavBarBackgroundColor: '#FFF',
+        imageSource: '',
         renderToolBar: undefined,
         toolBarHeight: DEFAULT_TOOLBAR_HEIGHT,
         translucentStatusBar: false
