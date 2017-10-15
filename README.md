@@ -7,6 +7,11 @@ Pure JS based collapsible toolbar for react native on Android and iOS.
     <img src="https://raw.githubusercontent.com/Agontuk/react-native-collapsible-toolbar/master/demo/demo_ios.gif" />
 </p>
 
+## Installation
+```sh
+yarn add react-native-collapsible-toolbar
+```
+
 ## Usage
 ```javascript
 import { Platform } from 'react-native';
