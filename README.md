@@ -37,6 +37,7 @@ import CollapsibleToolbar from 'react-native-collapsible-toolbar';
 | --- | --- | --- | --- |
 | collapsedNavBarBackgroundColor | String | '#FFF' | Navbar background color when it's collapsed |
 | imageSource | String | - | Image to render as collapsible component |
+| onContentScroll | Function | - | The scroll event
 | renderContent | Function | **REQUIRED** | Content to render below the collapsible toolbar |
 | renderNavBar | Function | **REQUIRED** | Transparent nav bar to render on top of the toolbar |
 | renderToolBar | Function | - | Custom toolbar component (will override imageSource) |
