@@ -8,6 +8,7 @@ export default class CollapsibleToolbar extends Component {
     static propTypes = {
         collapsedNavBarBackgroundColor: PropTypes.string,
         imageSource: PropTypes.string,
+        onContentScroll: PropTypes.func,
         renderContent: PropTypes.func.isRequired,
         renderNavBar: PropTypes.func.isRequired,
         renderToolBar: PropTypes.func,
@@ -18,6 +19,7 @@ export default class CollapsibleToolbar extends Component {
     static defaultProps = {
         collapsedNavBarBackgroundColor: '#FFF',
         imageSource: '',
+        onContentScroll: undefined,
         renderToolBar: undefined,
         toolBarHeight: DEFAULT_TOOLBAR_HEIGHT,
         translucentStatusBar: false
@@ -63,6 +65,7 @@ export default class CollapsibleToolbar extends Component {
         const {
             collapsedNavBarBackgroundColor,
             imageSource,
+            onContentScroll,
             renderContent,
             renderNavBar,
             renderToolBar,
@@ -82,7 +85,10 @@ export default class CollapsibleToolbar extends Component {
                     scrollEventThrottle={1}
                     onScroll={Animated.event(
                         [{ nativeEvent: { contentOffset: { y: this.scrollOffsetY } } }],
-                        { useNativeDriver: true }
+                        {
+                            useNativeDriver: true,
+                            listener: onContentScroll
+                        }
                     )}
                 >
                     <Animated.View
