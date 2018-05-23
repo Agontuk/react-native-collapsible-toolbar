@@ -1,6 +1,6 @@
 {
   "name": "react-native-collapsible-toolbar",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Pure JS based collapsible toolbar for react native on Android and iOS",
   "main": "src/index.js",
   "scripts": {
