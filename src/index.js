@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Animated, Image, Platform, StatusBar, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
+import { ifIphoneX } from './helper';
+
 const DEFAULT_TOOLBAR_HEIGHT = 300;
 
 export default class CollapsibleToolbar extends Component {
@@ -31,7 +33,7 @@ export default class CollapsibleToolbar extends Component {
         const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
         const ANDROID_STATUS_BAR_HEIGHT = props.translucentStatusBar ? StatusBar.currentHeight : 0;
 
-        this.statusBarHeight = Platform.OS === 'ios' ? 20 : ANDROID_STATUS_BAR_HEIGHT;
+        this.statusBarHeight = Platform.OS === 'ios' ? ifIphoneX(44, 20) : ANDROID_STATUS_BAR_HEIGHT;
         this.navBarHeight = APPBAR_HEIGHT + this.statusBarHeight;
         this.maxScrollableHeight = props.toolBarHeight - this.navBarHeight;
 
