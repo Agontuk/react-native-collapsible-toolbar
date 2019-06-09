@@ -38,8 +38,8 @@
     "eslint-plugin-react": "^7.1.0",
     "husky": "^0.14.3",
     "lint-staged": "^4.0.3",
-    "react": ">=15.0.0",
-    "react-native": ">=0.24.0"
+    "react": "16.8.3",
+    "react-native": "0.59.9"
   },
   "lint-staged": {
     "*.js": [
