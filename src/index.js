@@ -13,8 +13,10 @@ export default class CollapsibleToolbar extends Component {
         onContentScroll: PropTypes.func,
         renderContent: PropTypes.func.isRequired,
         renderNavBar: PropTypes.func.isRequired,
+        renderNavBarNoTitle: PropTypes.func,
         renderToolBar: PropTypes.func,
         toolBarHeight: PropTypes.number,
+        navBarHeight: PropTypes.number,
         translucentStatusBar: PropTypes.bool
     };
 
@@ -30,7 +32,7 @@ export default class CollapsibleToolbar extends Component {
     constructor(props) {
         super(props);
 
-        const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
+        const APPBAR_HEIGHT = this.props.navBarHeight ? this.props.navBarHeight : (Platform.OS === 'ios' ? 44 : 56);
         const ANDROID_STATUS_BAR_HEIGHT = props.translucentStatusBar ? StatusBar.currentHeight : 0;
 
         this.statusBarHeight = Platform.OS === 'ios' ? ifIphoneX(44, 20) : ANDROID_STATUS_BAR_HEIGHT;
@@ -70,6 +72,7 @@ export default class CollapsibleToolbar extends Component {
             onContentScroll,
             renderContent,
             renderNavBar,
+            renderNavBarNoTitle,
             renderToolBar,
             toolBarHeight,
             ...props
@@ -141,7 +144,7 @@ export default class CollapsibleToolbar extends Component {
                         }
                     ]}
                 >
-                    {renderNavBar()}
+                    {renderNavBarNoTitle ? renderNavBarNoTitle() : renderContent()}
                 </Animated.View>
             </View>
         );
