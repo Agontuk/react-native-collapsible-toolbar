@@ -39,7 +39,7 @@
     "husky": "^0.14.3",
     "lint-staged": "^4.0.3",
     "react": "16.8.3",
-    "react-native": "0.59.9"
+    "react-native": "0.62.3"
   },
   "lint-staged": {
     "*.js": [
